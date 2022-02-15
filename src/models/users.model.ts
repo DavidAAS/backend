@@ -7,9 +7,12 @@ import { HookReturn } from 'sequelize/types/hooks';
 export default function (app: Application): typeof Model {
   const sequelizeClient: Sequelize = app.get('sequelizeClient');
   const users = sequelizeClient.define('users', {
-  
+    name: {
+      type: DataTypes.STRING(400),
+      allowNull: false,
+    },
     email: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(80),
       allowNull: false,
       unique: true
     },
@@ -17,7 +20,23 @@ export default function (app: Application): typeof Model {
       type: DataTypes.STRING,
       allowNull: false
     },
-  
+    phones: {
+      type: DataTypes.JSON,
+      allowNull: true,
+    },
+    address: {
+      type: DataTypes.TEXT({ length: 'long' }),
+      allowNull: true,
+    },
+    avatar: {
+      type: DataTypes.TEXT({ length: 'long' }),
+      allowNull: true,
+    },
+    isActive: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: true,
+    }
   
   }, {
     hooks: {
