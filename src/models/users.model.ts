@@ -49,6 +49,9 @@ export default function (app: Application): typeof Model {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   (users as any).associate = function (models: any): void {
     // Define associations here
+    const { warehouses, warehouses_users } = models;
+
+    users.belongsToMany(warehouses, { through: warehouses_users });
     // See https://sequelize.org/master/manual/assocs.html
   };
 

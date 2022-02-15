@@ -6,24 +6,7 @@ import { HookReturn } from 'sequelize/types/hooks';
 
 export default function (app: Application): typeof Model {
   const sequelizeClient: Sequelize = app.get('sequelizeClient');
-  const warehouses = sequelizeClient.define('warehouses', {
-    name: {
-      type: DataTypes.STRING(200),
-      allowNull: false
-    },
-    phones: {
-      type: DataTypes.JSON,
-      allowNull: true,
-    },
-    address: {
-      type: DataTypes.TEXT({ length: 'long' }),
-      allowNull: true,
-    },
-    isActive: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-      defaultValue: true,
-    }
+  const warehousesUsers = sequelizeClient.define('warehouses_users', {
   }, {
     hooks: {
       beforeCount(options: any): HookReturn {
@@ -33,13 +16,14 @@ export default function (app: Application): typeof Model {
   });
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  (warehouses as any).associate = function (models: any): void {
+  (warehousesUsers as any).associate = function (models: any): void {
     // Define associations here
-    const { users, warehouses_users } = models;
+    const { users, warehouses } = models;
 
-    warehouses.belongsToMany(users, { through: warehouses_users });
+    warehousesUsers.belongsTo(users);
+    warehousesUsers.belongsTo(warehouses);
     // See https://sequelize.org/master/manual/assocs.html
   };
 
-  return warehouses;
+  return warehousesUsers;
 }
